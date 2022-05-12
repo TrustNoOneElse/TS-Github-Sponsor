@@ -20,7 +20,7 @@
 ## Communication
 
 ### Get Sponsor by authorize token
-``` httpClient.get(backend_url:backend_port/viewer/sponsor/current?token=USER_TOKEN) ```
+``` httpClient.get(backend_url:backend_port/viewer/sponsor/token?token=USER_TOKEN) ```
 
 ### Get Sponsor by loginName
 ``` httpClient.get(backend_url:backend_port/viewer/sponsor/login?login=USER_LOGIN_NAME) ```
