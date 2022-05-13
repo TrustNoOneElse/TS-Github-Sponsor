@@ -1,40 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { firstValueFrom, switchMap } from 'rxjs';
-import { SponsorResponse } from 'src/model/sponsor';
+import { firstValueFrom, Observable, switchMap } from 'rxjs';
+import { SponsorResponse, Sponsorship } from 'src/model/sponsor';
 import { QueryService } from 'src/query/query.service';
 
 @Injectable()
 export class ViewerService {
   constructor(private queryService: QueryService) {}
 
-  isSponsoredBy(loginName: string) {
+  isSponsoredBy(loginName: string): Observable<boolean> {
     return this.queryService.isSponsoredBy(loginName);
   }
 
-  isSponsoring(loginName: string) {
+  isSponsoring(loginName: string): Observable<boolean> {
     return this.queryService.isSponsoringTo(loginName);
   }
 
-  getSponsorByToken(token: string) {
+  getSponsorByToken(token: string): Observable<Sponsorship> {
     return this.queryService
       .getUserByToken(token)
       .pipe(switchMap((data) => this.queryService.getSponsor(data.login)));
   }
 
-  getSponsor(loginName: string) {
+  getSponsor(loginName: string): Observable<Sponsorship> {
     return this.queryService.getSponsor(loginName);
   }
 
-  async getAllSponsors() {
-    let result: SponsorResponse = { edges: [], pageInfo: null };
-    let data;
-    while ((data = await this.fetchSponsors().next())) {
-      result.edges.push(...data.edges);
+  async getAllSponsors(): Promise<Sponsorship[]> {
+    let result: Sponsorship[] = [];
+    for await (const data of this.fetchSponsors()) {
+      result.push(...data.edges.map((e) => e.node));
     }
     return result;
   }
 
-  async *fetchSponsors(): AsyncGenerator<SponsorResponse | null> {
+  async *fetchSponsors(): AsyncIterable<SponsorResponse | null> {
     let hasNextPage = false;
     let nextCursor = null;
     do {

@@ -19,6 +19,30 @@
 
 ## Communication
 
+### JSON return of the API
+```json
+{
+   "tierSelectedAt": "dateTimeStringWhenTierWasSelected",
+   "tier": {
+      "id": "idOfTheTier",
+      "name": "NameOfTheTier",
+      "isOneTime": true,
+      "isCustomAmount": true,
+      "closestLesserValueTier": {
+         "id": "idOfTheTier",
+         "name": "NameOfTheTier",
+      }
+   },
+   "isOneTimePayment": true,
+   "sponsorEntity": {
+      "__typename": "ReturnUserOrOrganization",
+      "login": "usersLoginName",
+      "email": "publicEmailOfTheUser",
+      "name": "publicNameOfTheUser"
+   }
+}
+```
+
 ### Get Sponsor by authorize token
 ``` httpClient.get(backend_url:backend_port/viewer/sponsor/token?token=USER_TOKEN) ```
 
@@ -27,9 +51,12 @@
  
 ### Check if loginName is Sponsor of you
 ``` httpClient.get(backend_url:backend_port/viewer/sponsor/by?login=USER_LOGIN_NAME)```
+return boolean
 
 ## Check if you are Sponsor of the user
 ``` httpClient.get(backend_url:backend_port/viewer/sponsor/to?login=USER_LOGIN_NAME)```
+returns boolean
 
 ### Get all your Sponsors
 ``` httpClient.get(backend_url:backend_port/viewer/sponsor/all)```
+returns an array of the JSON

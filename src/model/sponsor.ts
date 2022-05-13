@@ -29,6 +29,7 @@ export type SponsorEntity = {
   __typename: 'User' | 'Organization';
   login: string;
   email: string;
+  name: string;
 };
 
 export type Tier = {

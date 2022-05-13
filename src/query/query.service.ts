@@ -1,8 +1,12 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { filter, map, Observable, of, tap } from 'rxjs';
-import { AxiosResponse, AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-import { SponsorResponse, ViewerResponse } from 'src/model/sponsor';
+import { map, Observable } from 'rxjs';
+import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
+import {
+  SponsorResponse,
+  Sponsorship,
+  ViewerResponse,
+} from 'src/model/sponsor';
 
 @Injectable()
 export class QueryService {
@@ -64,7 +68,7 @@ export class QueryService {
       );
   }
 
-  getSponsor(loginName: string): Observable<any> {
+  getSponsor(loginName: string): Observable<Sponsorship> {
     return this.httpService
       .post(
         this.URL,
@@ -75,7 +79,26 @@ export class QueryService {
         // @ts-ignore
         this.getConfig(),
       )
-      .pipe(map((req) => req.data.data.viewer.sponsorshipsAsMaintainer));
+      .pipe(
+        map((req) => {
+          const data = req.data.data.user ?? req.data.data.organization;
+          const isUser = req.data.data.user != null;
+          let sponsor: Sponsorship = {
+            sponsorEntity: {
+              __typename: isUser ? 'User' : 'Organization',
+              email: data.email,
+              login: data.login,
+              name: data.name,
+            },
+            tier: data.sponsorshipForViewerAsSponsorable.tier,
+            isOneTimePayment:
+              data.sponsorshipForViewerAsSponsorable.isOneTimePayment,
+            tierSelectedAt:
+              data.data.sponsorshipForViewerAsSponsorable.tierSelectedAt,
+          };
+          return sponsor;
+        }),
+      );
   }
 
   getListOfSponsors(cursor?: string): Observable<SponsorResponse> {
@@ -118,10 +141,12 @@ export class QueryService {
             ... on User {
               login
               email
+              name
             }
             ... on Organization {
               login
               email
+              name
             }
           }
           tier {
@@ -160,10 +185,12 @@ export class QueryService {
             ... on User {
               login
               email
+              name
             }
             ... on Organization {
               login
               email
+              name
             }
           }
           tier {
@@ -226,6 +253,7 @@ export class QueryService {
         }
         login
         name
+        email
       }
       organization(login: $loginName) {
         sponsorshipForViewerAsSponsorable {
@@ -245,6 +273,7 @@ export class QueryService {
         }
         login
         name
+        email
       }
     }`;
   }
