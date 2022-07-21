@@ -22,7 +22,6 @@ export class QueryService {
           query: this.getUserByViewerQuery(),
           variables: {},
         }),
-        // @ts-ignore
         this.getConfig(token),
       )
       .pipe(map((req) => req.data.data.viewer));
@@ -36,7 +35,6 @@ export class QueryService {
           query: this.getSponsoredByQuery(),
           variables: { loginName },
         }),
-        // @ts-ignore
         this.getConfig(),
       )
       .pipe(
@@ -56,7 +54,6 @@ export class QueryService {
           query: this.getSponsoringToQuery(),
           variables: { loginName },
         }),
-        // @ts-ignore
         this.getConfig(),
       )
       .pipe(
@@ -76,14 +73,13 @@ export class QueryService {
           query: this.getSponsorByLoginForViewer(),
           variables: { loginName },
         }),
-        // @ts-ignore
         this.getConfig(),
       )
       .pipe(
         map((req) => {
           const data = req.data.data.user ?? req.data.data.organization;
           const isUser = req.data.data.user != null;
-          let sponsor: Sponsorship = {
+          const sponsor: Sponsorship = {
             sponsorEntity: {
               __typename: isUser ? 'User' : 'Organization',
               email: data.email,
@@ -110,7 +106,6 @@ export class QueryService {
             query: this.getSponsorQueryWithCursor(),
             variables: { cursor },
           }),
-          // @ts-ignore
           this.getConfig(),
         )
         .pipe(map((req) => req.data.data.viewer.sponsorshipsAsMaintainer));
@@ -122,7 +117,6 @@ export class QueryService {
             query: this.getSponsorQuery(),
             variables: {},
           }),
-          // @ts-ignore
           this.getConfig(),
         )
         .pipe(map((req) => req.data.data.viewer.sponsorshipsAsMaintainer));
@@ -306,9 +300,9 @@ export class QueryService {
     const headers: AxiosRequestHeaders = {
       Authorization: 'bearer ' + usedToken,
     };
-    const config: AxiosRequestConfig = {
+    const configs: AxiosRequestConfig = {
       headers,
     };
-    return config;
+    return configs;
   }
 }

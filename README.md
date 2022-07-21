@@ -12,10 +12,12 @@
 3. Get the latest node.js https://nodejs.org/en/download/
 4. Go into this project and hit "npm install" to install all dependencies
 5. After that execute "npm run build" to compile the ts code to js code
-6. Then you are ready to go and can start the Backend with ``` PORT=3000 ORIGIN='*' TOKEN=gpg node dist/main```. These are Environment variables which are only provided to the node.js instance and cannot access elsewhere
+6. Create in the root directory .env
+7. These are Environment variables which are only provided to the node.js instance
    1. PORT is the port where the backend should start
    2. ORIGIN is for cross origin, if you don't mind who access it, you can leave it with a *, otherwise here you find the options for origin https://github.com/expressjs/cors#configuration-options
    3. TOKEN this is your personal token which you generate in step 1
+8. Then you are ready to go and can start the Backend with ```node dist/main```. 
 
 ## Communication
 
