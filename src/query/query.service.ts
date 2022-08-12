@@ -79,7 +79,6 @@ export class QueryService {
         map((req) => {
           const data = req.data.data.user ?? req.data.data.organization;
           const isUser = req.data.data.user != null;
-          console.log(data);
           const sponsor: Sponsorship = {
             sponsorEntity: {
               __typename: isUser ? 'User' : 'Organization',
