@@ -79,6 +79,7 @@ export class QueryService {
         map((req) => {
           const data = req.data.data.user ?? req.data.data.organization;
           const isUser = req.data.data.user != null;
+          console.log(data);
           const sponsor: Sponsorship = {
             sponsorEntity: {
               __typename: isUser ? 'User' : 'Organization',
@@ -90,7 +91,7 @@ export class QueryService {
             isOneTimePayment:
               data.sponsorshipForViewerAsSponsorable.isOneTimePayment,
             tierSelectedAt:
-              data.data.sponsorshipForViewerAsSponsorable.tierSelectedAt,
+              data.sponsorshipForViewerAsSponsorable.tierSelectedAt,
           };
           return sponsor;
         }),
