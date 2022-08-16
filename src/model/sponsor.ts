@@ -37,5 +37,7 @@ export type Tier = {
   name: string;
   isOneTime: boolean;
   isCustomAmount: boolean;
+  monthlyPriceInDollars: number;
+  monthlyPriceInCents: number;
   closestLesserValueTier: Tier;
 };

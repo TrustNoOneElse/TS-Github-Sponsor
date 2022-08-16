@@ -79,6 +79,8 @@ export class QueryService {
         map((req) => {
           const data = req.data.data.user ?? req.data.data.organization;
           const isUser = req.data.data.user != null;
+          // not a sponsor return null
+          if (!data.sponsorshipForViewerAsSponsorable) return null;
           const sponsor: Sponsorship = {
             sponsorEntity: {
               __typename: isUser ? 'User' : 'Organization',
@@ -148,6 +150,8 @@ export class QueryService {
             name
             isOneTime
             isCustomAmount
+            monthlyPriceInDollars
+            monthlyPriceInCents
             closestLesserValueTier {
               id
               name
@@ -192,6 +196,8 @@ export class QueryService {
             name
             isOneTime
             isCustomAmount
+            monthlyPriceInDollars
+            monthlyPriceInCents
             closestLesserValueTier {
               id
               name
@@ -236,6 +242,8 @@ export class QueryService {
             name
             isOneTime
             isCustomAmount
+            monthlyPriceInDollars
+            monthlyPriceInCents
             closestLesserValueTier {
               id
               name
@@ -256,6 +264,8 @@ export class QueryService {
             name
             isOneTime
             isCustomAmount
+            monthlyPriceInDollars
+            monthlyPriceInCents
             closestLesserValueTier {
               id
               name
